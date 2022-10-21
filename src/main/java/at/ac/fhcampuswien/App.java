@@ -40,33 +40,159 @@ public class App {
 
     public static long [] lcg(long seed){
 
-        long[] randomNumbers = new long [10];
+        long m = ((long) Math.pow(2, 31));
+        int a = 1103515245;
+        int c = 12345;
 
-        final long m = (long) Math.pow(2, 31);
-        final int c = 12345;
-        final int a = 1103515245;
+        long[] randomNumbers = new long[10];
 
-        randomNumbers[0] = (a * seed + c) % m;
-
-        // Hier kommen die Berechnungen hin
-        for (int i = 1; i < randomNumbers.length; i++) {
-            System.out.println(randomNumbers[i]);
+        for (int i = 0; i < 10; i++)
+        {
+            if (i == 0)
+            {
+                randomNumbers[i] = (a * seed + c) % m;
+            }
+            else
+            {
+                randomNumbers[i] = (a * randomNumbers[i-1] + c) % m;
+            }
         }
         return randomNumbers;
-
     }
+
+
+        //randomNumbers[0] = (a * seed + c) % m;
+
+
+
+
 
     //----------------------------------------------------------
 
     public static void guessingGame (int numberToGuess){
 
         //......
+        Scanner scan = new Scanner(System.in);
 
+        int guesses = 10;
+        int counter = 1;
+
+        for (int i = 0; i < guesses; i++)
+        {
+            System.out.print("Guess number " + counter + ": ");
+            int guess = scan.nextInt();
+
+            if (guess == numberToGuess)
+            {
+                System.out.println("You won wisenheimer!");
+                break;
+            }
+            else
+            {
+                if (i + 1 == guesses)   // Letzter Versuch war falsch
+                {
+                    System.out.println("You lost! Have you ever heard of divide & conquer?");
+                    break;
+                }
+                if (guess > numberToGuess)   // zu groß
+                {
+                    System.out.println("The number AI picked is lower than your guess.");
+                }
+                else {   // zu klein
+                    System.out.println("The number AI picked is higher than your guess.");
+                }
+            }
+            counter++;
+        }
+    }
+
+
+
+
+    //----------------------------------------------------------
+
+
+    public static int randomNumberBetweenOneAndHundred()
+    {
+        Random rdm = new Random();
+
+        return rdm.nextInt(100-1+1) + 1;
     }
 
 
     //----------------------------------------------------------
 
+    public static boolean swapArrays(int[] array1, int[] array2) {
+        if (array1.length != array2.length)
+            return false;
+
+        for (int i = 0; i < array1.length; i++) {
+            array1[i]=array1[i]-array2[i];
+            array2[i]=array2[i]+array1[i];
+            array1[i]=array2[i]-array1[i];
+        }
+        return true;
+    }
+
+
+    //----------------------------------------------------------
+
+    public static String camelCase(String satz) {
+        char[] sentenceChars = satz.toCharArray();
+        if (sentenceChars[0] >= 97 && sentenceChars[0] <= 122)
+            sentenceChars[0] -= 32;
+
+        for (int i = 0; i < sentenceChars.length; i++) {
+            if (i >= 1 && sentenceChars[i-1] == ' ' && sentenceChars[i] >= 97 && sentenceChars[i] <= 122){    // a-z
+                sentenceChars[i] -= 32;   // Buchstabe Groß
+            }
+            if (i >= 1 && sentenceChars[i-1] != ' ' && sentenceChars[i] >= 65 && sentenceChars[i] <= 90){     // A-Z
+                sentenceChars[i] += 32;
+            }
+        }
+
+        for (int i = 0; i < sentenceChars.length; i++) {
+            if ((sentenceChars[i] > 0 && sentenceChars[i] <= 64) || (sentenceChars[i] >= 91 && sentenceChars[i] <= 96) || (sentenceChars[i] >= 123 && sentenceChars[i] <= 127)){
+                sentenceChars[i] = 32;
+            }
+        }
+        String sol = String.valueOf(sentenceChars).replaceAll(" ","");
+        return sol;
+    }
+
+
+
+    //----------------------------------------------------------
+
+    public static int checkDigit (int[] digitToCheck)
+    {
+        int result;
+        int sum = 0;
+        int weighting = 2;
+
+        for (int i = 0; i < digitToCheck.length; i++)
+        {
+            sum += digitToCheck[i] * (i + weighting);
+        }
+
+        int mod = sum % 11;
+
+        result = 11 - mod;
+
+        if (result == 10)
+        {
+            result = 0;
+        }
+
+        if (result == 11)
+        {
+            result = 5;
+        }
+        return result;
+    }
+
+
+    //----------------------------------------------------------
 
     public static void main(String[] args) {
         // test your method implementations here
